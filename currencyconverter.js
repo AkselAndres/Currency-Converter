@@ -1,3 +1,8 @@
+const currencyData = {
+    "USD": { "name": "United States Dollar", "rate": 1 },
+    "AED": { "name": "United Arab Emirates Dirham", "rate": 3.6725 }
+};
+
 async function convertCurrency() {
     const amount = document.getElementById("amount").value;
     const fromCurrency = document.getElementById("fromCurrency").value;
@@ -23,35 +28,45 @@ async function convertCurrency() {
 }
 
 async function populateCurrencies() {
-    const url = "https://v6.exchangerate-api.com/v6/ef0a6d0d40af35d5d031a059/latest/USD";
+    const fromCurrencyDropdown = document.getElementById("fromCurrency");
+    const toCurrencyDropdown = document.getElementById("toCurrency");
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
+    Object.keys(currencyData).forEach(currency => {
+        const option = document.createElement("option");
+        option.value = currency;
+        option.text = `${currency} - ${currencyData[currency].name}`;
+        fromCurrencyDropdown.add(option);
 
-        if (data.result === 'success') {
-            const currencies = Object.keys(data.conversion_rates);
+        const option2 = document.createElement("option");
+        option2.value = currency;
+        option2.text = `${currency} - ${currencyData[currency].name}`;
+        toCurrencyDropdown.add(option2);
+    });
 
-            const fromCurrencyDropdown = document.getElementById("fromCurrency");
-            const toCurrencyDropdown = document.getElementById("toCurrency");
+    generateCurrencyTable();
+}
 
-            currencies.forEach(currency => {
-                const option = document.createElement("option");
-                option.value = currency;
-                option.text = currency;
-                fromCurrencyDropdown.add(option);
+function generateCurrencyTable() {
+    const currencyTableBody = document.getElementById("currencyTableBody");
+    currencyTableBody.innerHTML = ''; 
 
-                const option2 = document.createElement("option");
-                option2.value = currency;
-                option2.text = currency;
-                toCurrencyDropdown.add(option2);
-            });
-        } else {
-            console.error("Error fetching currencies:", data.error);
-        }
-    } catch (error) {
-        console.error("Error fetching currencies:", error);
-    }
+    Object.keys(currencyData).forEach(currency => {
+        const row = document.createElement("tr");
+
+        const currencyCodeCell = document.createElement("td");
+        currencyCodeCell.textContent = currency;
+        row.appendChild(currencyCodeCell);
+
+        const currencyNameCell = document.createElement("td");
+        currencyNameCell.textContent = currencyData[currency].name;
+        row.appendChild(currencyNameCell);
+
+        const conversionRateCell = document.createElement("td");
+        conversionRateCell.textContent = currencyData[currency].rate.toFixed(4);
+        row.appendChild(conversionRateCell);
+
+        currencyTableBody.appendChild(row);
+    });
 }
 
 window.onload = populateCurrencies;
