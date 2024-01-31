@@ -163,6 +163,9 @@ const currencyData = {
     "ZWL": { "name": "Zimbabwean Dollar", "rate": 9686.6114 }
 };
 
+
+//Api key osa koodista
+
 async function convertCurrency() {
     const amount = document.getElementById("amount").value;
     const fromCurrency = document.getElementById("fromCurrency").value;
@@ -187,6 +190,8 @@ async function convertCurrency() {
     }
 }
 
+//Vasihtoehto luettelo koodista
+
 async function populateCurrencies() {
     const fromCurrencyDropdown = document.getElementById("fromCurrency");
     const toCurrencyDropdown = document.getElementById("toCurrency");
@@ -205,6 +210,8 @@ async function populateCurrencies() {
 
     generateCurrencyTable();
 }
+
+//Näkyvä taulukko osa koodista
 
 function generateCurrencyTable() {
     const currencyTableBody = document.getElementById("currencyTableBody");
